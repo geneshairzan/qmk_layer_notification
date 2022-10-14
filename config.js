@@ -1,5 +1,5 @@
 export const device = {
-  vid: 28263,
-  pid: 8499,
-  index: 1,
+  vid: 28263, //vendorId
+  pid: 8499, //productId
+  index: 1, // 0 - ~
 };
