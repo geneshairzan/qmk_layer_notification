@@ -110,6 +110,7 @@ this will make the aplication run at startup, auto restart on crash, etc. read m
 
 1. install pm2 `npm i pm2 -g`
 2. register the application `pm2 start index.js --name qmk_layer_notification`
+3. save confif `pm2 save`
 
 ## Notes
 
