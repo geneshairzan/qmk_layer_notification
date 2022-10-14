@@ -119,7 +119,7 @@ this will make the aplication run at startup, auto restart on crash, etc. read m
 
 - GLITCH1. how efficiently selected which device to monitor
 - put the code inside installer (ie. electoron) and make other people use easier.
-- imporove notification UI. like, "Layer - Default" , "Layer - OBS", etc
+- improve notification UI message. like, "Layer - Default" , "Layer - OBS", etc
 
 ## Depedency
 
