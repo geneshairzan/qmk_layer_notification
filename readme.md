@@ -105,7 +105,9 @@ export const device = {
 5. Test the aplication `node index`
 
 ## Application Management
+
 this will make the aplication run at startup, auto restart on crash, etc. read more [pm2](https://pm2.keymetrics.io/docs/usage/quick-start/)
+
 1. install pm2 `npm i pm2 -g`
 2. register the application `pm2 start index.js --name qmk_layer_notification`
 
@@ -121,6 +123,7 @@ this will make the aplication run at startup, auto restart on crash, etc. read m
 - put the code inside installer (ie. electoron) and make other people use easier.
 - improve notification UI message & mapping. like, "Layer - Default" , "Layer - OBS", etc
 - dynamic config reference for different user/config thru args or other method
+- resource optimization ?
 
 ## Depedency
 
