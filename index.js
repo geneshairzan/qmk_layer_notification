@@ -15,9 +15,9 @@ usbDetect.on(`remove:${device.vid}`, async function (d) {
 
 function listener() {
   setTimeout(async function () {
-    doNotify("Qmk Connected ");
+    doNotify("Qmk Connected");
     const devices = HID.devices()
-      .filter((d) => d.vendorId == device.vid && d.productId == device.pid)
+      .filter((d) => d.vendorId == device.vid && d.productId == device.pid && d.usage == device.usage)
       .sort(order);
     let active = new HID.HID(devices[device.index].path);
 
