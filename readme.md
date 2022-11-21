@@ -3,6 +3,7 @@
 This is layer notification for QMK Keyboard / firmware.
 Notification pop-up will show each time layer changes.
 ![alt text](https://github.com/geneshairzan/qmk_layer_notification/blob/master/demo/sample.png?raw=true)
+
 > iam really expecting you and community to improve this repo since i think this is the the first and only solution for qmk layer notification (instead using screen / lcd) by now.
 
 # Quick Features
@@ -10,6 +11,10 @@ Notification pop-up will show each time layer changes.
 - Made using node and other supporting library
 - Notification pop-up will show each time layer changes.
 - Plug / un-Plug detection
+
+# Other Reference :
+
+- Mac Installation Log by [Simon](https://github.com/g-simmons) : [here](https://github.com/geneshairzan/qmk_layer_notification/issues/1#issue-1441305248)
 
 # Installation & Instruction
 
@@ -48,8 +53,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
 
 5. Check if the debug already running :
 
->**Debugging With hid_listen**
-Something stand-alone? [hid_listed](https://www.pjrc.com/teensy/hid_listen.html), provided by PJRC, can also be used to display debug messages. Prebuilt binaries for Windows,Linux,and MacOS are available.
+> **Debugging With hid_listen**
+> Something stand-alone? [hid_listed](https://www.pjrc.com/teensy/hid_listen.html), provided by PJRC, can also be used to display debug messages. Prebuilt binaries for Windows,Linux,and MacOS are available.
 
 ## QMK Layer Notification
 
@@ -59,38 +64,36 @@ prerequisite. [Node and NPM](https://nodejs.org/en/download/). google it how to 
 2. install depedency `npm i`
 3. check the result of your HID list on your device `node list`
 4. find your device, and edit config.js accordingly.
-example somewhere in result
+   example somewhere in result
 
 ```js
 [
-  ...
-  {
+  ...{
     vendorId: 28263,
     productId: 8499,
-    path: '\\\\?\\hid#vid_6e67&pid_2133&mi_02&col01#7&2e040053&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}',
-    manufacturer: 'nguyedt',
-    product: 'Bento',
+    path: "\\\\?\\hid#vid_6e67&pid_2133&mi_02&col01#7&2e040053&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}",
+    manufacturer: "nguyedt",
+    product: "Bento",
     release: 256,
     interface: 2,
     usagePage: 1,
-    usage: 128
+    usage: 128,
   },
-  ...
-  {
+  ...{
     vendorId: 28263,
     productId: 8499,
-    path: '\\\\?\\hid#vid_6e67&pid_2133&mi_01#7&1ad3e415&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}',
-    manufacturer: 'nguyedt',
-    product: 'Bento',
+    path: "\\\\?\\hid#vid_6e67&pid_2133&mi_01#7&1ad3e415&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}",
+    manufacturer: "nguyedt",
+    product: "Bento",
     release: 256,
     interface: 1,
     usagePage: 65376,
-    usage: 97
-  }
-]
+    usage: 97,
+  },
+];
 ```
 
-**GLITCH1**. somehow, sometimes, this resulting multiple (array) device with same vendorId & productId. index in `config.device` use to **manually** select which device that will monitor using it index (start from 0).  **StUpiDly** try which index to use/monitor, one by one (at least for now).
+**GLITCH1**. somehow, sometimes, this resulting multiple (array) device with same vendorId & productId. index in `config.device` use to **manually** select which device that will monitor using it index (start from 0). **StUpiDly** try which index to use/monitor, one by one (at least for now).
 
 then i put that information into `config.js`.
 
