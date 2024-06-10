@@ -1,9 +1,12 @@
 import { order } from "./lib.js";
 import { device } from "./config.js";
-import path from "path";
+import { fileURLToPath } from "url";
+import { join, dirname } from "path";
 import HID from "node-hid";
-import WindowsToaster from "node-notifier";
+import notifier from "node-notifier";
 import usbDetect from "usb-detection";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 listener();
 
@@ -27,18 +30,14 @@ function listener() {
   }, 100);
 }
 
-var notifier = new WindowsToaster.WindowsToaster({
-  withFallback: false,
-  customPath: undefined,
-});
-
 async function doNotify(v) {
   notifier.notify({
-    title: "My notification",
+    title: "QMK Notifier",
     message: v,
-    icon: path.join("icon.png"),
+    icon: join(__dirname, "icon.png"),
     sound: false,
     id: 212,
     appID: "qmk-bento",
+    timeout: 2
   });
 }
