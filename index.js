@@ -4,16 +4,23 @@ import { fileURLToPath } from "url";
 import { join, dirname } from "path";
 import HID from "node-hid";
 import notifier from "node-notifier";
-import usbDetect from "usb-detection";
+import { usb } from "usb";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 listener();
 
-usbDetect.startMonitoring();
-usbDetect.on(`add:${device.vid}`, listener);
-usbDetect.on(`remove:${device.vid}`, async function (d) {
-  await doNotify("Device Disconnected");
+usb.on("attach", function (d) {
+  if (d.deviceDescriptor.idVendor === device.vid
+    && d.deviceDescriptor.idProduct === device.pid) {
+    listener();
+  }
+});
+usb.on("detach", async function (d) {
+  if (d.deviceDescriptor.idVendor === device.vid
+    && d.deviceDescriptor.idProduct === device.pid) {
+    await doNotify("Device Disconnected");
+  }
 });
 
 function listener() {
@@ -26,6 +33,11 @@ function listener() {
 
     active.on("data", function (data) {
       doNotify(data.toString());
+    });
+
+    //handle device error (such as the device being unplugged), otherwise HID will panic and the app will crash
+    active.on("error", function(err) {
+      console.log(err)
     });
   }, 100);
 }
