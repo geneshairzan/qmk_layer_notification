@@ -13,12 +13,12 @@ listener();
 usbDetect.startMonitoring();
 usbDetect.on(`add:${device.vid}`, listener);
 usbDetect.on(`remove:${device.vid}`, async function (d) {
-  await doNotify("Qmk Disconnected");
+  await doNotify("Device Disconnected");
 });
 
 function listener() {
   setTimeout(async function () {
-    doNotify("Qmk Connected");
+    doNotify("Device Connected");
     const devices = HID.devices()
       .filter((d) => d.vendorId == device.vid && d.productId == device.pid && d.usage == device.usage)
       .sort(order);
