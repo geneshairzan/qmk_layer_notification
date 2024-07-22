@@ -27,7 +27,7 @@ prerequisite [QMK debuging](https://docs.qmk.fm/#/faq_debug?id=debugging-faq)
 > Your keyboard will output debug information if you have CONSOLE_ENABLE = yes in your rules.mk. By default the output is very limited, but you can turn on debug mode to increase the amount of debug output. Use the DEBUG keycode in your keymap, use the Command feature to enable debug mode, or add the following code to your keymap.
 
 1. put `#include "print.h"` on top your `keymap.c`
-2. put `uprintf("SOME DYNAMIC LAYER CHANGES");` in `keymap.c`, somewhere in your layer shift code
+2. put `uprintf("SOME DYNAMIC LAYER CHANGES\n");` in `keymap.c`, somewhere in your layer shift code
 3. my example :
 
 ```c
@@ -44,7 +44,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
                 }
                 layer_clear();
                 layer_on(selected_layer);
-                uprintf("layer%u", selected_layer);
+                uprintf("layer%u\n", selected_layer);
             }
             break;
     }

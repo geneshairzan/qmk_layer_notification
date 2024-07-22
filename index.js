@@ -1,21 +1,31 @@
 import { order } from "./lib.js";
 import { device } from "./config.js";
-import path from "path";
+import { fileURLToPath } from "url";
+import { join, dirname } from "path";
 import HID from "node-hid";
-import WindowsToaster from "node-notifier";
-import usbDetect from "usb-detection";
+import notifier from "node-notifier";
+import { usb } from "usb";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 listener();
 
-usbDetect.startMonitoring();
-usbDetect.on(`add:${device.vid}`, listener);
-usbDetect.on(`remove:${device.vid}`, async function (d) {
-  await doNotify("Qmk Disconnected");
+usb.on("attach", function (d) {
+  if (d.deviceDescriptor.idVendor === device.vid
+    && d.deviceDescriptor.idProduct === device.pid) {
+    listener();
+  }
+});
+usb.on("detach", async function (d) {
+  if (d.deviceDescriptor.idVendor === device.vid
+    && d.deviceDescriptor.idProduct === device.pid) {
+    await doNotify("Device Disconnected");
+  }
 });
 
 function listener() {
   setTimeout(async function () {
-    doNotify("Qmk Connected");
+    doNotify("Device Connected");
     const devices = HID.devices()
       .filter((d) => d.vendorId == device.vid && d.productId == device.pid && d.usage == device.usage)
       .sort(order);
@@ -24,21 +34,22 @@ function listener() {
     active.on("data", function (data) {
       doNotify(data.toString());
     });
+
+    //handle device error (such as the device being unplugged), otherwise HID will panic and the app will crash
+    active.on("error", function(err) {
+      console.log(err)
+    });
   }, 100);
 }
 
-var notifier = new WindowsToaster.WindowsToaster({
-  withFallback: false,
-  customPath: undefined,
-});
-
 async function doNotify(v) {
   notifier.notify({
-    title: "My notification",
+    title: "QMK Notifier",
     message: v,
-    icon: path.join("icon.png"),
+    icon: join(__dirname, "icon.png"),
     sound: false,
     id: 212,
     appID: "qmk-bento",
+    timeout: 2
   });
 }
