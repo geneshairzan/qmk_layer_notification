@@ -58,6 +58,37 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
 > **Debugging With hid_listen**
 > Something stand-alone? [hid_listed](https://www.pjrc.com/teensy/hid_listen.html), provided by PJRC, can also be used to display debug messages. Prebuilt binaries for Windows,Linux,and MacOS are available.
 
+### A Generic Example
+The following can be used to detect any layer toggle keypresses, and automatically send a notification for the changes.
+```c
+#include "print.h"
+...
+static const char *layerStrings[] = {
+  "main layer",
+  "layer 2",
+  "layer 3"
+};
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  switch (keycode) {
+    //handle other macro stuff here.
+    //if you don't otherwise use macros, you can remove the switch statement and just use the if statement.
+    default:
+      if ((keycode & 0xffe0) == QK_TOGGLE_LAYER && record->event.pressed) {//code is TG and key is pressed
+        uint8_t layercode = keycode & 0x1F;
+        bool layerActive = layer_state_is(layercode);
+        if (layerActive) {
+          uprintf("toggled %s off\n", layerStrings[layercode]);
+        }
+        else {
+          uprintf("toggled %s on\n", layerStrings[layercode]);
+        }
+        return true;
+      }
+      return true;//process all other keycodes normally
+  }
+}
+```
+
 ## QMK Layer Notification
 
 prerequisite. [Node and NPM](https://nodejs.org/en/download/). google it how to have in your computer. there is ton of resources out there.
